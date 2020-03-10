@@ -1,0 +1,130 @@
+*, :after, :before {
+    box-sizing: border-box;
+    text-decoration: inherit;
+    vertical-align: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    position: relative;
+    background-color: #5f5f5f;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: arial;
+}
+
+nav a:hover {
+    background-color: black;
+    color: white
+}
+
+nav a {
+    display: block;
+    color: white;
+    padding: 20px 40px;
+    margin: 0px 40px;
+    text-decoration: none;
+    float: left;
+}
+
+.back {
+    color: white;
+}
+
+
+/* .content {
+     font-family: arial;
+     display: grid;
+    flex-direction: column;
+    min-height: 100vh;
+ } */
+
+
+.logo {
+    display: block;
+    padding: 64px 16px;
+    text-align: center;
+    margin: 0 auto;
+    font-family: arial;
+    font-size: 300%;
+}
+
+
+.main-content{
+    min-height: 100vh;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 10px;
+    position: relative;
+    padding: 10px;
+    background-repeat: no-repeat;
+    background-size: 1900px 1200px;
+}
+
+.main-content > div {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.column1{
+    grid-column-start: 2;
+    grid-row-start: 1;
+}
+
+.column3{
+    grid-column-start: 1;
+    grid-row-start: 2;
+}
+
+input{
+    border: 1px solid #cccccc;
+    padding: 8px;
+}
+
+button {
+    cursor: pointer;
+    border: 1px solid #888888;
+    background: #888888;
+    color: white;
+    padding: 8px;
+}
+button:hover {
+    background-color: black;
+}
+
+.search {
+    float: right;
+    padding: 10px 4px;
+}
+
+.recorder{
+    flex-grow: 40;
+}
+
+.youtube{
+    float: center;
+    margin: 100px 550px;
+}
+
+
+
+footer {
+    position: relative;
+    bottom : 0;
+    background: #5f5f5f;
+    margin-top: 0px;
+    padding: 6px 0;
+    width: 100%
+}
+footer p {
+    color: white;
+    padding: 0 16px;
+}

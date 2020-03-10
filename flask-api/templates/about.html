@@ -1,0 +1,19 @@
+{% extends 'header.html' %}
+
+{% block header %}
+<h1> {% block title %} About {% endblock %} </h1>
+{% endblock %}
+
+{% block content %}
+
+
+<body>
+
+    <div class="youtube">
+        <iframe width="800" height="500" src="https://www.youtube.com/embed/SEnXr6v2ifU">
+        </iframe>
+    </div>
+    <script src="{{url_for('static',filename= 'scripts.js')}}"> </script>
+</body>
+
+{% endblock %}
