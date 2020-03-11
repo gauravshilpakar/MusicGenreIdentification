@@ -1,0 +1,35 @@
+{% extends 'header.html' %}
+
+{% block header %}
+<h1> {% block title %} Homepage {% endblock %} </h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="column1">
+    <button id="button"> start </button> <br> <br>
+    <audio id="player" controls></audio>
+</div>
+
+<div class="column2">
+    <form id="fileform">
+        <p id="uploadmessage"> </p>
+        <label for="file"> Select a file: </label>
+        <input type="file" name="audiofile" id="file"><br><br>
+        <input type="submit" name="Submit">
+    </form>
+</div>
+
+<div class="column3">
+    <form id="fileform2">
+        <label for="filegetter"> Input file Name: </label>
+        <input type="text" id="filename">
+        <input type="submit" name="Submit">
+    </form>
+
+</div>
+
+<script src="{{url_for('static',filename= 'scripts.js')}}"> </script>
+
+
+{% endblock %}
