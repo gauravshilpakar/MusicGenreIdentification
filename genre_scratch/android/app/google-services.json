@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "484041383123",
+    "firebase_url": "https://genre-predictor.firebaseio.com",
+    "project_id": "genre-predictor",
+    "storage_bucket": "genre-predictor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484041383123:android:bff5031a4460123d1dc826",
+        "android_client_info": {
+          "package_name": "com.rajukhadka.genre_scratch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484041383123-ms485j2h5ivuds3l4pm2j3uauamnn9sc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3SW37oP7HaUU8sUQu8ziMGcI-Vy9a-E8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484041383123-ms485j2h5ivuds3l4pm2j3uauamnn9sc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
