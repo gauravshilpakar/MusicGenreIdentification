@@ -1,107 +1,132 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import split_folders
+from tensorflow.keras.optimizers import SGD
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Activation, Dense, Dropout, Conv2D, Flatten, MaxPooling2D, GlobalMaxPooling2D, GlobalAveragePooling1D, AveragePooling2D, Input, Add
+from tensorflow.keras import layers
+import tensorflow.keras
+from sklearn.model_selection import train_test_split
+import csv
+import pathlib
+from PIL import Image
 import os
+import warnings
+import random
+import IPython.display
+import librosa.display
 import librosa
+import pandas as pd
+import numpy as np
+from numpy import argmax
+import matplotlib.pyplot as plt
+# sklearn Preprocessing
+# Keras
+warnings.filterwarnings('ignore')
+
+genres = 'blues classical country disco hiphop jazz metal pop reggae rock'.split()
+for g in genres:
+    pathlib.Path(f'img_data/{g}').mkdir(parents=True, exist_ok=True)
+    for filename in os.listdir(f'./drive/My Drive/genres/{g}'):
+        songname = f'./drive/My Drive/genres/{g}/{filename}'
+        y, sr = librosa.load(songname, mono=True, duration=5)
+        print(y.shape)
+        plt.specgram(y, NFFT=2048, Fs=2, Fc=0, noverlap=128,
+                     cmap=cmap, sides='default', mode='default', scale='dB')
+        plt.axis('off')
+        plt.savefig(f'img_data/{g}/{filename[:-3].replace(".", "")}.png')
+        plt.clf()
 
 
-from os.path import isfile
+# To only split into training and validation set, set a tuple to `ratio`, i.e, `(.8, .2)`.
+split_folders.ratio('./img_data/', output="./data",
+                    seed=1337, ratio=(.8, .2))  # default values
 
-import tensorflow as tf
-from tensorflow.keras.models import Sequential, Model, load_model
-from tensorflow.keras.layers import Dense, Flatten, Conv1D, MaxPool1D, BatchNormalization, Lambda
-from tensorflow.keras.layers import Input, Dense, TimeDistributed, LSTM, Activation, Dropout
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
-from tensorflow.keras.optimizers import Adam, RMSprop
-from tensorflow.keras import regularizers, Input
-#from tensorflow.python.estimator.model_fn import Modekeys as Modes
-
-from sklearn.metrics import classification_report, confusion_matrix
-
-epoch = 5
-batch_size = 32
-num_classes = 8
-# n_features = X_train.shape[2]
-#  n_time = X_train.shape[1]
-N_LAYERS = 3
-FILTER_LENGTH = 5
-CONV_FILTER_COUNT = 56
-BATCH_SIZE = 32
-LSTM_COUNT = 96
-EPOCH_COUNT = 10
-NUM_HIDDEN = 64
-L2_regularization = 0.001
-
-dict_genres = {'Electronic': 0, 'Experimental': 1, 'Folk': 2, 'Hip-Hop': 3,
-               'Instrumental': 4, 'International': 5, 'Pop': 6, 'Rock': 7}
+train_datagen = ImageDataGenerator(
+    # rescale all pixel values from 0-255, so aftre this step all our pixel values are in range (0,1)
+    rescale=1./255,
+    shear_range=0.2,  # to apply some random tranfromations
+    zoom_range=0.2,  # to apply zoom
+    horizontal_flip=True)  # image will be flipper horiz
+test_datagen = ImageDataGenerator(rescale=1./255)
 
 
-def model_fn(input_shape):
-    model_input = Input(input_shape, name='input')
-    layer = model_input
-    for i in range(N_LAYERS):
-        layer = Conv1D(filters=CONV_FILTER_COUNT,
-                       kernel_size=FILTER_LENGTH, activation='relu', kernel_regularizer=regularizers.l2(0.001))(layer)
-        layer = BatchNormalization(momentum=0.9)(layer)
-        layer = MaxPool1D(pool_size=2)(layer)
-        layer = Dropout(0.3)(layer)
+training_set = train_datagen.flow_from_directory(
+    './data/train',
+    target_size=(64, 64),
+    batch_size=32,
+    class_mode='categorical',
+    shuffle=False)
+test_set = test_datagen.flow_from_directory(
+    './data/val',
+    target_size=(64, 64),
+    batch_size=32,
+    class_mode='categorical',
+    shuffle=False)
 
-    # LSTM Layer
-    layer = LSTM(LSTM_COUNT, return_sequences=False)(layer)
-    layer = Dropout(0.4)(layer)
-
-    # Dense Layer
-    layer = Dense(NUM_HIDDEN, kernel_regularizer=regularizers.l2(
-        0.001), name='Dense1')(layer)
-    layer = Dropout(0.4)(layer)
-
-    # output layer
-    layer = Dense(8, activation='softmax', name='Dense2')(layer)
-    model_output = layer
-
-    model = Model(model_input, model_output)
-    model.compile(loss='categorical_crossentropy',
-                  optimizer='adam', metrics=['accuracy'])
-
-    early_stop = EarlyStopping(monitor='val_loss', patience=2)
-
-    return model
-
-
-def train_model(X_train, y_train, X_val, y_val):
-    input_shape = (None, 128)
-    model = model_fn(input_shape)
-    model.fit(X_train, y_train, batch_size=BATCH_SIZE,
-              epochs=EPOCH_COUNT, validation_data=(X_val, y_val), verbose=1)
-    model.save('genre_predictor/models/mymodel1.h5')
+model = Sequential()
+input_shape = (64, 64, 3)
+# 1st hidden layer
+model.add(Conv2D(32, (3, 3), strides=(2, 2), input_shape=input_shape))
+model.add(AveragePooling2D((2, 2), strides=(2, 2)))
+model.add(Activation('relu'))
+# 2nd hidden layer
+model.add(Conv2D(64, (3, 3), padding="same"))
+model.add(AveragePooling2D((2, 2), strides=(2, 2)))
+model.add(Activation('relu'))
+# 3rd hidden layer
+model.add(Conv2D(64, (3, 3), padding="same"))
+model.add(AveragePooling2D((2, 2), strides=(2, 2)))
+model.add(Activation('relu'))
+# Flatten
+model.add(Flatten())
+model.add(Dropout(rate=0.5))
+# Add fully connected layer.
+model.add(Dense(64))
+model.add(Activation('relu'))
+model.add(Dropout(rate=0.5))
+# Output layer
+model.add(Dense(10))
+model.add(Activation('softmax'))
+model.summary()
 
 
-if __name__ == '__main__':
+epochs = 200
+batch_size = 8
+learning_rate = 0.01
+decay_rate = learning_rate / epochs
+momentum = 0.9
+sgd = SGD(lr=learning_rate, momentum=momentum,
+          decay=decay_rate, nesterov=False)
+model.compile(optimizer="sgd", loss="categorical_crossentropy",
+              metrics=['accuracy'])
 
-    # training_file = np.load('genre_predictor/Data/shuffled_train.npz')
-    # X_train, y_train = training_file['arr_0'], training_file['arr_1']
-    # val_file = np.load('genre_predictor/Data/shuffled_valid.npz')
-    # X_val, y_val = val_file['arr_0'], val_file['arr_1']
+model.fit_generator(
+    training_set,
+    steps_per_epoch=100,
+    epochs=50,
+    validation_data=test_set,
+    validation_steps=200)
 
-    test_data = np.load('genre_predictor/Data/test_arr.npz')
-    X_test, y_test = test_data['arr_0'], test_data['arr_1']
 
-    # train_model(X_train, y_train, X_val, y_val)
-    new_model = load_model('genre_predictor/models/mymodel1.h5')
+# Model Evaluation
+model.evaluate_generator(generator=test_set, steps=50)
+# OUTPUT
+[1.704445120342617, 0.33798882681564246]
 
-    y_test -= 1
+test_set.reset()
+pred = model.predict_generator(test_set, steps=50, verbose=1)
 
-    X_test_raw = librosa.core.db_to_power(X_test, ref=1.0)
-    X_test = np.log(X_test_raw)
+predicted_class_indices = np.argmax(pred, axis=1)
 
-    y_pred = new_model.predict(X_test)
-    y_pred = np.argmax(y_pred, axis=1)
-    #print(classification_report(y_pred, y_test, target_names=dict_genres.keys()))
-    mat = confusion_matrix(y_test, y_pred)
-    plt.figure(figsize=(16, 5))
-    sns.heatmap(mat.T, square=True, annot=True, fmt='d', cbar=False,
-                xticklabels=dict_genres.keys(),
-                yticklabels=dict_genres.keys(), linewidths=.5)
-    plt.xlabel('true label')
-    plt.ylabel('predicted label')
-    plt.show()
+labels = (training_set.class_indices)
+labels = dict((v, k) for k, v in labels.items())
+predictions = [labels[k] for k in predicted_class_indices]
+predictions = predictions[:200]
+filenames = test_set.filenames
+
+print(len(filename, len(predictions)))
+# (200, 200)
+
+results = pd.DataFrame({"Filename": filenames,
+                        "Predictions": predictions}, orient='index')
+results.to_csv("prediction_results.csv", index=False)
