@@ -1,0 +1,33 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - Music Genre Identification </title>
+
+<link rel="stylesheet" href="{{url_for('static',filename= 'styles.css')}}">
+<link rel="icon" href="/static/icons.png">
+
+<body>
+  <div class="back"
+    style="background-image:url(https://cdn.vox-cdn.com/uploads/chorus_asset/file/19766124/acastro_200303_3924_iBackPack_masthead.0.jpg)">
+    <div class="logo">
+      <h1> Music Genre Identification </h1>
+    </div>
+  </div>
+  <div class="navi div">
+    <nav>
+
+      <a href="{{url_for('yt_link')}}"> From YouTube</a>
+      <a href="https://github.com/gauravshilpakar/MusicGenreIdentification"> About</a>
+      <div class="search">
+        <!-- <form>
+          <input placeholder='Google Search'>
+          <button>Search</button>
+        </form> -->
+      </div>
+    </nav>
+  </div>
+</body>
+
+<div class="main-content">
+
+  {% block content %} {% endblock %}
+
+</div>

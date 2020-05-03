@@ -1,0 +1,26 @@
+{% extends 'header.html' %}
+
+{% block header %}
+<h1> {% block title %} Homepage {% endblock %} </h1>
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <button id="button"> START </button> <br> <br>
+    <audio id="player" controls></audio>
+</div>
+
+<div>
+    <form id="fileform2">
+        <label for="filegetter"> Input file Name: </label>
+        <input type="text" id="filename">
+        <input type="submit" name="Submit" class="button1">
+    </form>
+
+</div>
+
+<!-- <script src="{{url_for('static',filename= 'scripts.js')}}"> </script> -->
+
+
+{% endblock %}

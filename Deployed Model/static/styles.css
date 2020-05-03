@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap');
+@import url('./Fonts/SF-Pro-Display-Regular.otf');
+body{
+    font-family: "IBM Plex Sans"; 
+        background: url(cover.png) no-repeat 
+    center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.mfcc_output{
+    height: 400px;
+    margin: 20px
+}
+
+*,
+:after,
+:before {
+    box-sizing: border-box;
+    text-decoration: inherit;
+    vertical-align: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    position: relative;
+    background-color: #5f5f5f;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+
+}
+
+nav a:hover {
+    background-color: black;
+    color: white
+}
+
+
+nav a {
+    display: block;
+    color: white;
+    padding: 20px 20px;
+    /* margin: 0px 40px; */
+    text-decoration: none;
+    float: left;
+}
+
+.back {
+    color: white;
+}
+
+
+/* .content {
+     font-family: "SF Pro Display";
+     display: grid;
+    flex-direction: column;
+    min-height: 100vh;
+ } */
+
+
+.logo {
+    display: block;
+    padding: 64px 16px;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 300%;
+}
+
+
+/* .main-content {
+    min-height: 100vh;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 10px;
+    position: relative;
+    padding: 10px;
+    background-repeat: no-repeat;
+    background-size: 1900px 1200px;
+} */
+
+.main-content>div {
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* .column1{
+    grid-column-start: 2;
+    grid-row-start: 1;
+}
+
+.column3{
+    grid-column-start: 1;
+    grid-row-start: 2;
+} */
+
+input {
+    border: 1px solid #cccccc;
+    padding: 8px;
+}
+
+button {
+    display: inline-block;
+    padding: 0.35em 1.2em;
+    border: 0.1em solid #FFFFFF;
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 0.12em;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    /* color: #FFFFFF; */
+    text-align: center;
+    transition: all 0.2s;
+}
+
+button:hover {
+    color: #000000;
+    background-color: #FFFFFF;
+}
+
+/* button:active{
+
+} */
+
+@media all and (max-width:30em) {
+    button {
+        display: block;
+        margin: 0.4em auto;
+    }
+}
+
+.search {
+    float: right;
+    padding: 10px 4px;
+}
+
+.recorder {
+    flex-grow: 40;
+}
+
+.youtube {
+    float: center;
+    margin: 100px 550px;
+}
+
+footer {
+    background: #5f5f5f;
+    margin-top: 0px;
+    padding: 6px 0;
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+/* footer p {} */
+
+.ytlink {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 100px 20px 0 20px;
+}
+
+.linkprovider {
+    font-size: 40px;
+    text-transform: uppercase;
+}
+
+.button1 {
+    margin-top: 10px;
+
+
+}
+
+.button1:hover {
+    border: 0;
+    background-color: #000000;
+    color: white;
+
+}
+
+.linkplaceholder {
+    size: 200;
+}
+
+@media all and (max-width:30em) {
+    .button1 {
+        display: block;
+        margin: 0.4em auto;
+    }
+}
+
+div.info {
+    font-size: 20px;
+}
+
+input[type="text"]::placeholder {
+
+    /* Firefox, Chrome, Opera */
+    text-align: center;
+}
